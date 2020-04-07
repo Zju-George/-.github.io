@@ -17,7 +17,13 @@ Text can be **bold**, _italic_, or ~~strikethrough~~.
 
 # 自适应细分的原因
 
-细分的最基本规则就是让一个三角形一分为四，所谓**全局细分**就是无差别的对每一个三角形
+在这里，细分的最基本规则被定义为让一个三角形一分为四。如下图：
+
+<img src="/assets/subdivide.png" alt="细分规则" width="80%" height="80%" align="center" />
+
+所谓**全局细分**就是无差别的对每一个三角形，一分为四。然而全局细分会带来的一个显著问题是：有些三角形的三个顶点采样值都大于 0.5 或者都小于 0.5，也即这个三角形三个顶点都要保留或都要删去，
+更直白的说，这个三角形所在位置不在雕刻边缘，所以不需要继续细分；因此全局细分增加了很多~~无用~~没有意义的几何信息。这会使得程序速度变慢，也增加模型的保存大小。
+
 This is a normal paragraph following a header. GitHub is a code hosting platform for version control and collaboration. It lets you and others work together on projects from anywhere.
 
 ## [](#header-2)Header 2
