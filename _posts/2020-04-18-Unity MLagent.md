@@ -24,7 +24,7 @@ D:\unityProjects\ml-agents-0.14.1> python-envs\sample-env\Scripts\activate
 (***好吧主要还是因为我记不住这行命令*** :joy:)
 
 
-然后训练调用训练配置 `config.yaml` 反正也在 `config/` 底下，蛮方便的。
+然后训练加载的训练配置 `config.yaml` 反正也在 `config/` 底下，蛮方便的。
 
 好了，without further ado，进入正题。
 
