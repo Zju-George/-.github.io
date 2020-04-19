@@ -5,11 +5,11 @@ title: "Unity3D ml-agents"
 #### <center>先简单描述一下版本问题</center>
 我用的 ml-agents 版本是 [1.4.1](https://github.com/Unity-Technologies/ml-agents/tree/0.14.1)，原因是 1.5 好像有点 bug，具体我在这个 [issue](https://github.com/Unity-Technologies/ml-agents/issues/3763#event-3228106437) 里描述了。
 
-然后因为我的 cuda 版本是 10.1, 但是 tf 2.1 才支持 cuda 10.1，2.0 只支持 cuda 10.0，我懒得 downgrade cuda 了，所以用 tf 2.1。问题在于， ml-agents 1.4.1 要求 tf 版本小于 2.1，参考 `setup.py` 中第 [64行](https://github.com/Unity-Technologies/ml-agents/blob/89b5959128a91b5aceb46764ff2867cf49aa2cb6/ml-agents/setup.py#L64)）。
+然后因为我的 cuda 版本是 10.1, 但是 tf 2.1 才支持 cuda 10.1，2.0 只支持 cuda 10.0，我懒得 downgrade cuda 了 :pensive:，所以用 tf 2.1。问题在于， ml-agents 1.4.1 要求 tf 版本小于 2.1，参考 `setup.py` 中第 [64行](https://github.com/Unity-Technologies/ml-agents/blob/89b5959128a91b5aceb46764ff2867cf49aa2cb6/ml-agents/setup.py#L64)）。
 
 经测试 tf 2.1 可行，所以我修改了 `install_requires` 变量，即 `"tensorflow>=1.7,<=2.1"`，但是改完了还需要重新 `pip install -e .` 一下，因为 check 的时候应该是对 pip setup 后的二进制文件 `*.lib` 等来 check 的。有点像修改了 `.bashrc` 还需要 `source` 一下才生效。
 
-<a href="#xinde">一些心得</a>(页面锚点，免得下拉麻烦)
+<a href="#xinde">一些心得</a> (页面锚点，免得下拉麻烦)
 
 ### 环境安装
 
@@ -17,7 +17,7 @@ title: "Unity3D ml-agents"
 
 推荐建立 virtual env，这样在任何路径下都能执行 `mlagents-learn`。但是还是建议 cmd 的 workingdir 就是 `$YOUR_MLAGENTS_REPO`，因为进入 virtual env 就用 default 的命令就行，例如
 
-```console
+```text
 D:\unityProjects\ml-agents-0.14.1> python-envs\sample-env\Scripts\activate
 ``` 
 
@@ -38,13 +38,13 @@ Might you have an include in your theme? Why not try it here!
 ### GPU训练与CPU训练对比
 
 **我的渣渣 GPU：**
-```console
+```js
 pciBusID: 0000:01:00.0 name: Quadro P2000 computeCapability: 6.1
 coreClock: 1.4805GHz coreCount: 8 deviceMemorySize: 5.00GiB deviceMemoryBandwidth: 130.53GiB/s
 ```
 
 **训练配置：**
-```console
+```
 trainer:        ppo
 buffer_size:    100
 batch_size:     10
@@ -74,7 +74,7 @@ keep_checkpoints:       5
 **训练log:**
 
 (对不起我应该用 tensorboard 可视化的 :joy:)
-```console
+```
 INFO: Step: 1000. Time Elapsed: 14.591 s Mean Reward: -0.574. Std of Reward: 0.819. Training.
 INFO: Step: 2000. Time Elapsed: 27.266 s Mean Reward: -0.404. Std of Reward: 0.915. Training.
 INFO: Step: 3000. Time Elapsed: 40.777 s Mean Reward: -0.014. Std of Reward: 1.000. Training.
@@ -107,7 +107,7 @@ INFO: Step: 29000. Time Elapsed: 382.733 s Mean Reward: 1.000. Std of Reward: 0.
 INFO: Step: 30000. Time Elapsed: 395.683 s Mean Reward: 1.000. Std of Reward: 0.000. Training.
 INFO: Step: 31000. Time Elapsed: 408.694 s Mean Reward: 1.000. Std of Reward: 0.000. Training.
 ```
-因为小球找到 Target 我设置的 reward 我设置的就是 **1**，所以 `Mean Reward` 到 **1** 基本就可以了 :smile:
+因为小球找到 Target 我设置的 reward 就是 **1**，所以 `Mean Reward` 到 **1** 基本就可以了 :smile:
 
 **结果**：
 
@@ -118,6 +118,7 @@ INFO: Step: 31000. Time Elapsed: 408.694 s Mean Reward: 1.000. Std of Reward: 0.
 <br>
 
 **我的渣CPU：**
+
 <img src="/assets/CPU.png" alt="CPU" width="60%" height="60%" align="center" />
 
 **训练log:**
@@ -152,7 +153,7 @@ INFO:Step: 16000. Time Elapsed: 148.039 s Mean Reward: 0.667. Std of Reward: 0.7
 
 ## 一些心得（持续更新）
 
-* `Agent` 类自带的 `Max Step`，step 可以看成是实际的一帧，和 `CollectObservations()`, `AgentAction(float[] vectorAction)` 的调用频率是不一样的。可用如下代码进行简单测试：
+* `Agent` 类自带的 `Max Step`，step 可以看成是实际的一帧，和 `CollectObservations()`, `AgentAction(float[] vectorAction)` 的调用频率是不一样的。可用如下代码结合环境 Reset 时两者的步数进行简单测试：
 
     ```c#
     private int stepnum = 0;
@@ -169,6 +170,6 @@ INFO:Step: 16000. Time Elapsed: 148.039 s Mean Reward: 0.667. Std of Reward: 0.7
 
     <img src="/assets/decision%20period.png" alt="Decision Period" width="80%" height="80%" align="center" />
 
-    同时官网文档里提到，如果环境不太复杂，一般设置比较大的 Decision Period————对应更小的决策频率————训练收敛会更快。
+    同时官网文档里提到，如果环境不太复杂，一般设置比较大的 Decision Period——对应更小的决策频率——训练收敛会更快。
 
 *  TODO
