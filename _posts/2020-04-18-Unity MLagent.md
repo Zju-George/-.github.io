@@ -9,12 +9,13 @@ title: "Unity3D ml-agents"
 
 经测试 tf 2.1 可行，所以我修改了 `install_requires` 变量，即 `"tensorflow>=1.7,<=2.1"`，但是改完了还需要重新 `pip install -e .` 一下，因为 check 的时候应该是对 pip setup 后的二进制文件 `*.lib` 等来 check 的。有点像修改了 `.bashrc` 还需要 `source` 一下才生效。
 
+<a href="#xinde">一些心得</a>(页面锚点，免得下拉麻烦)
 
 ### 环境安装
 
 具体安装 1.4.1 的[文档](https://github.com/Unity-Technologies/ml-agents/tree/0.14.1/docs)已经写得蛮详细了，这里仅仅提一嘴：
 
-推荐建立 virtual env，这样在任何路径下都能执行 `mlagents-learn`。但是还是建议 cmd 的 workingdir 就是 `$YOUR_MLAGENTS_REPO`，因为进入 virtual env 就用 default 的命令就行
+推荐建立 virtual env，这样在任何路径下都能执行 `mlagents-learn`。但是还是建议 cmd 的 workingdir 就是 `$YOUR_MLAGENTS_REPO`，因为进入 virtual env 就用 default 的命令就行，例如
 
 ```console
 D:\unityProjects\ml-agents-0.14.1> python-envs\sample-env\Scripts\activate
@@ -117,7 +118,7 @@ INFO: Step: 31000. Time Elapsed: 408.694 s Mean Reward: 1.000. Std of Reward: 0.
 <br>
 
 **我的渣CPU：**
-<center><img src="/assets/CPU.png" alt="CPU" width="50%" height="50%" align="center" /></center>
+<img src="/assets/CPU.png" alt="CPU" width="60%" height="60%" align="center" />
 
 **训练log:**
 
@@ -146,3 +147,28 @@ INFO:Step: 16000. Time Elapsed: 148.039 s Mean Reward: 0.667. Std of Reward: 0.7
 
 (***刻意没训练完全，看看是什么效果*** :joy:)
 <center><img src="/assets/roller_test_cpu.gif" alt="Result_cpu" width="100%" height="100%" align="center" /></center>
+
+<a name="xinde"></a>
+
+## 一些心得（持续更新）
+
+* `Agent` 类自带的 `Max Step`，step 可以看成是实际的一帧，和 `CollectObservations()`, `AgentAction(float[] vectorAction)` 的调用频率是不一样的。可用如下代码进行简单测试：
+
+    ```c#
+    private int stepnum = 0;
+    public override void CollectObservations()
+    {
+        stepnum++;
+        Debug.Log("执行了 " + stepnum);
+
+        // Your Collect Obeservation Code...
+    }
+    ```
+
+    后者频率就跟 gym 里的 `env.step()` 一样。那么两者的比值是根据 `Decision Period` 决定的。
+
+    <img src="/assets/decision%20period.png" alt="Decision Period" width="80%" height="80%" align="center" />
+
+    同时官网文档里提到，如果环境不太复杂，一般设置比较大的 Decision Period————对应更小的决策频率————训练收敛会更快。
+
+*  TODO
