@@ -202,16 +202,5 @@ title: "Adaptive Subdivision"
 | ok           | good `oreos`      | hmm   |
 | ok           | good `zoute` drop | yumm  |
 
-### 忽略
 
-<dl>
-<dt>Name</dt>
-<dd>George</dd>
-<dt>Born</dt>
-<dd>1993</dd>
-<dt>Birthplace</dt>
-<dd>China</dd>
-<dt>Color</dt>
-<dd>Black&White</dd>
-</dl>
 

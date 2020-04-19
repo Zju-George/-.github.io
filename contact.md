@@ -1,11 +1,19 @@
 ---
 layout: page
 title: Contact
-tagline: Create a contact form and you are good to go
+tagline: 联系我
 ref: contact
 order: 1
 ---
 
-Jekyll is a great tool to create static sites but with static site, there's no backend to send your data to: that is why you need a third part service.
+<dl>
+<dt>Bilibili</dt>
+<dd><a href="https://space.bilibili.com/198345535">space.bilibili.com/198345535</a></dd>
+<dt>Github</dt>
+<dd><a href="https://github.com/Zju-George">github.com/Zju-George</a></dd>
+<dt>Email</dt>
+<dd><a href = "mailto: 470196540@qq.com">470196540@qq.com</a></dd>
+</dl>
 
-[Go to the Home Page]({{ '/' | absolute_url }})
+[Go to the Home Page]({{ '/' | absolute_url }}) 
+{: style="color:gray; font-size: 120%; text-align: center;"}
