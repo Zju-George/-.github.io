@@ -187,20 +187,28 @@ title: "Adaptive Subdivision"
   ```
 ---
 
+原始二值图像和四边形：
+
+<center><img src="/assets/origin.png" alt="" width="80%" height="80%" align="center" /></center>
+
+自适应细分的效果，在黑白分界处细分：
+
+<center><img src="/assets/heart.png" alt="" width="80%" height="80%" align="center" /></center>
+
 ## 工程文件
 
 可以下载这个工程文件 [subdivide_test.blend]({{ 'https://github.com/Zju-George/blenderStatisticalModeling/blob/master/subdivide_test.blend?raw=true' | absolute_url }}). (Blender 版本>=2.80)
 
 里面会包含完整代码 `subdivide.py`，但要注意把第 `7` 行的测试二值图像换成自己的。点 `Run Script` 即可。:thumbsup:
 
-## 全局细分与自适应细分对比(待更新)
+## 全局细分与自适应细分对比
 
-| head1        | head two          | three |
-|:-------------|:------------------|:------|
-| ok           | good swedish fish | nice  |
-| out of stock | good and plenty   | nice  |
-| ok           | good `oreos`      | hmm   |
-| ok           | good `zoute` drop | yumm  |
+
+|纹理图像       | 迭代次数        | 全局细分顶点数 | 自适应细分顶点数 |
+|:-------------:|:------------------:|:------:|:-------------:|
+| 心形       | 9   | 31k  |  3k  |
+| 猪        | 10    | 124k |  19k |
+| 树状      | 11    | 525k   |67k |
 
 
 

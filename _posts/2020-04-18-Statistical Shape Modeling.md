@@ -155,3 +155,53 @@ def Point_at(obj, direction):
 <center><img src="/assets/arrow.png" alt="公式" width="100%" height="100%" align="center" /></center>
 
 这里每运行一次程序得到的都是每个位置的随机的向量，可以看到随着 $\sigma$ 变大，形变是越来越光滑的，这个是符合预期的。
+
+但是我们最后还是要将这个形变向量叠加到原始模型上，例如一个球。但这里空间采样不一定刚好在模型的点上，所以需要找最近邻并插值，有：
+
+```python
+def FindNearest(point):
+    assert(type(point)==Vector)
+    lowerx = int(point[0])
+    lowery = int(point[1])
+    lowerz = int(point[2])
+    upperx = math.ceil(point[0])
+    uppery = math.ceil(point[1])
+    upperz = math.ceil(point[2])
+    lower = lowerz * 5 * 5 + lowery * 5 + lowerx
+    upper = upperz * 5 * 5 + uppery * 5 + upperx
+    lower = "Arrow" + str(lower)
+    upper = "Arrow" + str(upper)
+    resx = point[0] - lowerx
+    resy = point[1] - lowery
+    resz = point[2] - lowerz
+    lower = ArrowDict[lower]
+    upper = ArrowDict[upper]
+    x = resx * upper[0] + (1-resx) * lower[0]
+    y = resy * upper[1] + (1-resy) * lower[1]
+    z = resz * upper[2] + (1-resz) * lower[2]
+    return x, y, z
+```
+
+最后我们遍历模型上的点，施加以形变：
+
+```python
+def IterVerts(obj=bpy.data.objects['Sphere']):
+    global SphereDict
+    for vert in obj.data.vertices:
+        if(vert.co.x>=0 and vert.co.y>=0 and vert.co.z>=0):
+            SphereDict[vert] = vert.co.copy()
+    print("verts number of " + obj.name + " is : " + str(len(obj.data.vertices.items())))
+    for vert in obj.data.vertices:
+        if(vert.co.x>=0 and vert.co.y>=0 and vert.co.z>=0):
+            x, y, z =FindNearest(vert.co)
+            x = x/reduceFactor
+            y = y/reduceFactor
+            z = z/reduceFactor
+            vert.co.x += x
+            vert.co.y += y
+            vert.co.z += z
+```
+
+当我们设 $\sigma$ 比较大，且给予观察值，得到后验的高斯过程形变结果：
+
+<center><img src="/assets/sphere.png" alt="" width="100%" height="100%" align="center" /></center>
