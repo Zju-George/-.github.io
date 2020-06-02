@@ -24,9 +24,12 @@ D:\unityProjects\ml-agents-0.14.1> python-envs\sample-env\Scripts\activate
 (***好吧主要还是因为我记不住这行命令*** :joy:)
 
 
-然后训练加载的训练配置 `config.yaml` 反正也在 `config/` 底下，蛮方便的。
+如果训练配置是 `config/rollerball_config.yaml`, 训练命令为
+```text
+(sample-env) D:\unityProjects\ml-agents-0.14.1>mlagents-learn config/rollerball_config.yaml --run-id=RollerBall --train
+```
 
-好了，without further ado，进入正题。
+好了，without further ado，直接分析结果。
 
 {% comment %}
 Might you have an include in your theme? Why not try it here!
